@@ -16,9 +16,12 @@ class DFSQuizApp:
         self.score = 0
         self.round = 0
 
-        # UI Frames
+        self.instruction_label = tk.Label(root, text="🧠 DFS Quiz:\nClick the nodes in the order you think a DFS traversal would visit them, starting from the alphabetically first node.", font=("Arial", 12), justify="center", wraplength=400)
+        self.instruction_label.pack(pady=10)
+
         self.canvas_frame = tk.Frame(root)
         self.canvas_frame.pack()
+
         self.graph_canvas = None
         self.buttons_frame = tk.Frame(root)
         self.buttons_frame.pack()
@@ -118,10 +121,14 @@ class DFSQuizApp:
         return visited
 
     def select_node(self, node):
-        if node not in self.selected_order:
+        if node in self.selected_order:
+            self.selected_order.remove(node)
+            self.order_label.config(text=f"Selected Order: {self.selected_order}")
+            self.buttons[node].config(state="normal")
+        else:
             self.selected_order.append(node)
             self.order_label.config(text=f"Selected Order: {self.selected_order}")
-            self.buttons[node].config(state="disabled")
+            #self.buttons[node].config(state="disabled")
 
     def submit(self):
         if self.selected_order == self.correct_order:
